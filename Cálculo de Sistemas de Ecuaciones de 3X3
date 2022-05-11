@@ -1,0 +1,90 @@
+#Codigo para calcular sistemas de ecuaciones de tres incognitas de forma:
+
+#        (1)  a1X+b1Y+c1Z=d1
+#        (2)  a2X+b2Y+c2Z=d2
+#        (3)  a3X+b3Y+c3Z=d3
+
+
+#1°-Importamos las libreri­as necesarias
+import numpy as np
+import matplotlib.pyplot as plt
+
+print('Código para resolver sistemas de ecuaciones lineales de 3 incognitas')
+print('Ingresar valores de a, b y c según consta en las ecuaciones (1),(2) y (3)')
+
+#2° Ingresamos las Variables segun las ecuaciones (1), (2) y (3)
+#Ec.(1)
+a1= float(input("Inserte un valor para a1: "))
+b1= float(input("Inserte un valor para b1: "))
+c1= float(input("Inserte un valor para c1: "))
+d1= float(input("Inserte un valor para d1: "))
+#Ec.(2)
+a2= float(input("Inserte un valor para a2: "))
+b2= float(input("Inserte un valor para b2: "))
+c2= float(input("Inserte un valor para c2: "))
+d2= float(input("Inserte un valor para d2: "))
+#Ec.(3)
+a3= float(input("Inserte un valor para a3: "))
+b3= float(input("Inserte un valor para b3: "))
+c3= float(input("Inserte un valor para c3: "))
+d3= float(input("Inserte un valor para d3: "))
+
+#3° Ingresamos las matrices de las variables (m1) y la de solucion (m2), segun los inputs:
+m1=np.array([[a1,b1,c1],[a2,b2,c2],[a3,b3,c3]])
+m2=np.array([d1,d2,d3])
+
+#4° Definimos el determinante de la matriz m1 para determinar si es singular o no:
+#   -Matriz singular: detm1=0
+#   -Matriz no singular: detm1!=0
+detm1=np.linalg.det(m1)
+print('El determinante de m1 es :', detm1)
+
+#5° Configuramos las variables para realizar posteriormente el grafico 3D:
+resultado=np.linalg.solve(m1,m2)
+N = 20
+x = np.linspace(resultado[0]-10,resultado[1]+10,N)
+y = np.linspace(resultado[0]-10,resultado[1]+10,N)
+xi,yi = np.meshgrid(x,y)
+z1= -a1**xi-b1**yi+d1
+z2= -a2**xi-b2**yi+d2
+z3= -a3**xi-b3**yi+d3
+
+#6° Creamos ciclo if-else para calcular el resultado e imprimirlo por pantalla según cumpla o no la condición del determinante mencionada, en ambos casos se considerará graficar los planos:
+if detm1!=0:
+    resultado=np.linalg.solve(m1,m2)
+    print('El resultado de [x,y,z] es: ', resultado)
+    N = 20
+    x = np.linspace(resultado[0]-10,resultado[1]+10,N)
+    y = np.linspace(resultado[0]-10,resultado[1]+10,N)
+    xi,yi = np.meshgrid(x,y)
+    z1= (-1*a1*xi-1*b1*yi+d1)/c1
+    z2= (-1*a2*xi-1*b2*yi+d2)/c2
+    z3= (-1*a3*xi-1*b3*yi+d3)/c3
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.plot_surface(xi,yi,z1, color='red', linewidth=4, label= '(a)', alpha=0.5) 
+    ax.plot_surface(xi,yi,z2, color= 'green', linewidth=4, label= '(b)', alpha=0.5)
+    ax.plot_surface(xi,yi,z3, color= 'blue', linewidth=4, label= '(c)', alpha=0.5)
+    ax.scatter(resultado[0], resultado[1],resultado[2], color = 'red', marker='o', label = 'Punto de intersección', linewidth = 6)
+    ax.set_title('Grafica de Sistema de Ecuaciones de Tres Incognitas', fontweight='bold')
+    ax.set_xlabel('X', fontweight='bold')
+    ax.set_ylabel('Y', fontweight='bold')
+    ax.set_zlabel('Z', fontweight='bold')
+else:
+    print('El sistema no tiene soluciones, vuelva a ejecutar el codigo con otros valores')
+    N = 20
+    x = np.linspace(resultado[0]-10,resultado[1]+10,N)
+    y = np.linspace(resultado[0]-10,resultado[1]+10,N)
+    xi,yi = np.meshgrid(x,y)
+    z1= (-1*a1*xi-1*b1*yi+d1)/c1
+    z2= (-1*a2*xi-1*b2*yi+d2)/c2
+    z3= (-1*a3*xi-1*b3*yi+d3)/c3
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.plot_surface(xi,yi,z1, color='red', linewidth=4, label= '(a)', alpha=0.5) 
+    ax.plot_surface(xi,yi,z2, color= 'green', linewidth=4, label= '(b)', alpha=0.5)
+    ax.plot_surface(xi,yi,z3, color= 'blue', linewidth=4, label= '(c)', alpha=0.5)
+    ax.set_title('Grafica de Sistema de Ecuaciones de Tres Incognitas', fontweight='bold')
+    ax.set_xlabel('X', fontweight='bold')
+    ax.set_ylabel('Y', fontweight='bold')
+    ax.set_zlabel('Z', fontweight='bold')
