@@ -1,0 +1,37 @@
+"""Cálculo de una Matriz de Distancia en Google Colab
+Primero: Se importan las librerias y datos
+[P1, P2, P3, ... , Pn] corresponden a los puntos [1, 2, 3, ... , n]. Cada punto (P1, P2, ... , Pn) tiene una coordenada [x,y] que le corresponde en la linea data. 
+Por tanto, podriamos tener por ejemplo: P0= [18, 10], P1= [61,139] P2= [68, 128] P3= [71, 140] Etc...
+
+P0 corresponde a la variable que se busca, en este caso tiene coordenadas [18, 10].
+
+Si se quisiera agregar más puntos a la lista tendrian que irse añadiendo a la derecha en data e ir señalando a qué P (punto) corresponde en la linea de pts."""
+
+import pandas as pd
+from scipy.spatial import distance_matrix
+data = [[18, 10], [20, 20], [18, 30], [19, 20]]
+pts = ['Z1', 'Z2' , 'Z3', 'Z4']
+df = pd.DataFrame(data, columns=['x', 'y'], index=pts)
+print (df)
+
+"Segundo: Se genera la Matriz de Distancia y exporta a excel:
+En la linea 3 puede ser modificado el nombre del archivo y el nombre de la hoja de excel en que aparecerá, en este caso ambos se llaman: mxdistc14.xlsx
+
+Solo se modifica el mxdistc14 y el .xlsx no se toca (ya que cambiaría el formato)"""
+
+dfdist=pd.DataFrame(distance_matrix(df.values, df.values), index=df.index, columns=df.index)
+print(dfdist)
+dfdist.to_excel('SolemneII.xlsx', sheet_name='SolemneII')
+
+"""Para finalizar sólo hay que revisar en la sección con el logo de una carpeta ("Archivos") a 
+la izquierda y aparecerá generado el archivo que ya se puede descargar en formato excel (click en los 3 puntos de la derecha 
+del nombre del archivo o click derecho sobre el nombre del archivo)."""
+
+#Si se quiere obtener los máximos y mínimos se tiene que:
+
+valormax= df.stack().max()
+posiciondelvalormax= df.stack().idxmax()
+print("El valor máximo es: ", valormax, "Y se ubica en la posición: ", posiciondelvalormax)
+valormin= df.stack().min()
+posiciondelvalormin= df.stack().idxmin()
+print("El valor mínimo es: ", valormin, "Y se ubica en la posición: ", posiciondelvalormin)
